@@ -1,0 +1,90 @@
+apiversion:v1
+kind:pod
+metadata:
+   name:hello-pod
+   labels:
+      zone:prod
+      version:v1
+spec:
+  containers:
+    -name:hello-ctr
+	 image: image path
+	 ports:
+	   -containerPort:8080
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+
+apiversion:v1
+kind:pod
+metadata:
+   name:hello-pod1
+   labels:
+     zone:prod
+	 version:1
+spec: 
+    containers:
+	  -name:hello-container1
+	   image: image url path
+	   ports:
+	    -containerport:8080
+		
+		https://medium.com/@zwischenzugs/learn-kubernetes-the-hard-way-the-easy-and-cheap-way-6f82b665ccd9
+		
+		https://hackr.io/tutorials/learn-kubernetes
+		
+		https://hackr.io/tutorial/kubernetes-by-example
+		
+		
+		https://www.marcolancini.it/2018/blog-learn-kubernetes/
+		
+		https://medium.com/@arschles/cloud-native-comes-with-new-challenges-ca9c22dbbb7
+		
+		https://twitter.com/b0rk/status/872822361199972352/photo/1
+		
+		
+		https://medium.com/@geraldcroes/kubernetes-traefik-101-when-simplicity-matters-957eeede2cf8
+		
+		https://container.training/kube-halfday.yml.html#73
+		
+		replication controller ensures high availability, we need replication controller to create multiple pods to share the load across them
+		
+		replication controller spans across multiple nodes
+		
+		replication controller is the older technology, replica set is the latest one, selector is the major difference between the replication controller and the replica set
+		
+		
+		
+		
+		The role of replication controller is to monitor the pods and deploy the new pod if anything is failed
+		
+		
+		how does the replica set know what are the pods it needs to be monitored
+		
+		command for updating replica set
+		kubectl replace -f replicaset-definition.yml
+		
+		to scale replicaset-definition
+		
+		kubectl scale --replicas=6 -f replicaset-definition.yml
+		
+		kubectl scale --replicas=6 -f replicaset  myapp-replicaset
+	
+		
+		to create a replica set
+		
+		kubectl create -f replicaset-definition.yml
+		
+   to get a list of replica set
+   
+   kubectl get replicaset
+   
+   to delete a replica set
+   
+   kubectl delete replicaset myapp-replicaset(also deletes all underlying pods)
+   
+   
