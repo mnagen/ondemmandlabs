@@ -1,0 +1,585 @@
+salt formula should be modular
+
+states need to be modular
+
+
+
+sudo yum install https://repo.saltstack.com/yum/amazon/salt-amzn2-repo-latest-2.amzn2.noarch.rpm
+
+
+ culr -L https://bootstrap.saltstack.com -o install-salt.sh
+    3  curl -L https://bootstrap.saltstack.com -o install-salt.sh
+    4  ls
+    5  sh install-salt.sh -A 3.81.99.0
+
+pub-3555775863091671
+
+The pillar is already running in Salt by default. To see the minion's pillar data:
+
+salt '*' pillar.items
+
+
+salt -G 'os_family:debian' test.ping
+google.com, pub-3555775863091671, DIRECT, f08c47fec0942fa0
+
+salt-call 'ip-172-31-56-12.ec2.internal' state.apply
+
+
+systemctl start salt-master.service
+systemctl start salt-minion.service
+
+go to /etc/salt/minion and uncomment the master
+
+Under [master : salt] point the salt to the master ip, if both master and minion is running on same machine, you can 
+point the salt to 127.0.0.1
+
+sudo salt-call key.finger --local
+
+salt 'ip-172-31-49-187.ec2.internal' grains.items
+
+http://www.devlo.io/my-super-post.html
+
+
+a pillar is a secure version of grains
+
+-C the compund target option allows for multiple target types to be evaluated,, allowing greater granularity in target matching
+
+salt -C 'G@os_family:debian and not G@os:debian' test.ping
+
+grains are data stored on each minion, data is nested key value store
+
+grains.items gets all of a minions grains
+To list out the keys of the minions 
+
+grains.delval
+
+deletes the grain value identified by a given key
+
+to delete grains value
+
+salt '*' grains.delval roles destructive=True
+
+grain.set
+
+sets a value in to a minions grains by a given key
+
+you can append grains
+
+salt '*' grains.append roles sample-value
+
+grains.remove
+
+removes an existin value from a list at the given key
+
+
+
+
+give a role to a minion
+
+salt 'web2' grains.append hwaas-web
+
+
+salt 'web2' state.apply
+
+
+mkdir /srv/pillar
+
+/srv/pillar/top.sls
+
+
+top.sls
+
+
+base:
+  '*":
+     - data
+
+
+/srv/pillar/data.sls:
+
+info: somedata
+
+
+
+MORE COMPLEX DATA
+Unlike states, pillar files do not need to define formulas. This example sets up user data with a UID:
+
+/srv/pillar/users/init.sls:
+
+users:
+  thatch: 1000
+  shouse: 1001
+  utahdave: 1002
+  redbeard: 1003
+
+
+The same directory lookups that exist in states exist in pillar, so the file users/init.sls can be referenced with users in the top file.
+
+The same directory lookups that exist in states exist in pillar, so the file users/init.sls can be referenced with users in the top file.
+
+The top file will need to be updated to include this sls file:
+
+/srv/pillar/top.sls:
+
+base:
+  '*':
+    - data
+
+
+
+
+
+pillar is used for storing petentially sensitive information such as usernames, passwords, certificates and private 
+keys
+
+pillar data is centralized
+
+The pillar is already running in Salt by default. To see the minion's pillar data:
+
+salt '*' pillar.items
+
+
+salt '*' grains.remove roles sample-value
+
+grains.append
+
+adds a new value to an existing list of values identified by agiven key
+
+Salt-key –L 
+
+OR
+
+sudo salt-key --list all
+
+To accept the key
+
+Salt-key –A and proceed to yes
+
+
+once key is accepted now the master and minion will be able to communicate
+
+To just check if the master and minion are communication
+
+To find which minion are connected to minons are connected to salt master, you can running
+
+salt-key --list all
+
+To target am-squid machine
+
+salt 'am-squid*' test.ping
+salt 'ip-172-31-49-187.ec2.internal' state.apply
+
+add-apt-repository ppa:saltstack/salt
+
+apt-get update
+
+
+apt-get install salt-master salt-minion salt-cloud
+
+
+vi /etc/salt/minion
+
+master: localhost
+
+  or
+
+master: master ip address
+
+apt-get install git
+
+
+
+
+
+
+
+
+The states that will be applied to a minion in a given environment can be viewed using the state.show_top function.
+
+
+salt '*' state.show_top
+
+
+
+
+
+By default Salt represents the SLS data in what is one of the simplest serialization formats available - YAML.
+
+A typical SLS file will often look like this in YAML:
+
+# Install a bunch of essential packages.
+ 
+pkg-essentials:
+  pkg.installed:
+    - pkgs:
+      - gcc
+      - python-pip
+      - ntp
+      - wget
+      - git
+      - telnet
+      - epel-release
+      - python-setuptools
+
+
+* 
+* * 
+* * * 
+* * * * 
+* * * * * 
+* * * * 
+* * * 
+* * 
+*
+
+
+    Creating a virtual env
+
+pip install virtualenv
+
+virtualenv myenv
+
+to activate virtualenv
+
+source myenv/bin/activate                 
+
+
+
+# Enter a word split in to list
+
+
+def splitlist(word):
+      
+   print(list(word))
+
+
+
+
+
+
+word=input("Enter the word to slpit:")
+
+splitlist(word)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+
+
+#Getting the last list in python
+
+
+lis=[1,2,3,4]
+print(lis[-1::])        
+
+#python program to find a subsets in a given set.
+
+
+import itertools 
+def
+findsubsets (s, n):
+  
+ return
+list (itertools.combinations (s, n))
+  
+
+s =[1, 2, 3] 
+n = 2
+
+print (findsubsets (s, n))
+
+
+
+
+#Python prgram to find the sum of elements in a list
+
+total = 0 
+
+lis =[14, 13, 8, 9, 3, 7, 9] 
+
+for ele in range (0, len (lis)):
+  
+  total = total + lis[ele] 
+print (total)
+print(total)   
+
+Targeting
+
+what servers commands are beeing run against targeting options
+
+Minion-id
+Grains
+Pillar
+Regex
+Nodegroup
+ predefined sets of minions defined in the master config
+
+tageting using minionid
+
+salt 'web1' user.add melvinf home=/home/ondemandlabs
+
+
+
+targeting using regex
+
+salt '*' user.add richardl home=/home/richardl
+
+
+Targeting using grain
+
+salt '*' -G 'os:Ubuntu" user.add ondemandlabs home=/home/ondemandlabs 
+
+Targeting using compunds (Regex and grains)
+
+salt -C 'G:os:Ubuntu or E@db:' user.add richardl home=/home/richardl
+
+MOdules- SALT has 400+ modules
+
+  webserver modules (apache,nginx)
+  database modules(mysql, postgresql,cassandra)
+  Nagios
+  Git and Github
+  chef and puppet
+  windows and mac
+  containers(Docker, Kubernetes,LXC)
+   AWS(through the boto python SDK)               
+
+
+salt also has executio ,odules for managing other bits of salt
+
+Beacons
+cloud
+Grains
+Minions
+Pillar
+Modules
+
+
+Sys module
+
+View available modules
+
+salt 'salt' sys.list_modules
+
+
+view module functions
+
+salt '*' sys.list_functions user
+
+view module information
+
+sudo '*' sys.doc user.add
+
+
+pkg module
+
+salt '*' sys.list_functions pkg
+
+sudo salt 'salt' pkg.remove vim   
+
+sudo salt 'salt' pkg.install vim   
+
+
+-----cmd Module---  
+
+
+sudo salt '*' sys.list_functions cmd
+
+sudo salt '*'  cmd.which vim
+
+sudo salt '*'  cmd.run 'echo "set softtabstop=2\nsettabstop=2\nset shiftwidth=2\nset expandtab\nreta" >> .vimrc
+
+sudo salt '*'  cmd.run 'echo "set softtabstop=2\nsettabstop=2\nset shiftwidth=2\nset expandtab\nreta" >> .vimrc runas=user
+
+
+sudo salt "8" cmd.run 'cat .vimrc'
+
+salt-call --local user.add mnagen home=/home/mnagen
+
+salt-call --local cmd.run 'whoami' runas=mnagen
+
+slat-call user.add mnagen home=/home/mnagen
+
+
+
+Execution Modules in salt
+
+ correct syntax for running multiple functions at once?
+
+salt '*' cmd.run,test.ping 'whoami',
+
+
+------------Grains---------- setting up grains role
+
+salt '*' sys.doc grains.set
+
+ex: salt 'salt' grains.set 'role' saltmaster- setting a role to saltmaster for salt
+
+
+salt 'minion-id' grains.set 'role' web - a role(web) is set for minion-id
+
+
+To know what role is assocaited with minnions
+
+salt 'salt' grains.fetch role
+
+ans: saltmaster
+
+salt 'minion-id' grains.get role
+
+ans: web
+
+
+
+Salt states
+
+Massive sarivers will be having similar configurations- how to re use config
+
+A state is reusable piece of end-state configurations
+
+yaml for dana user
+
+dana:
+  user.present:
+   - home /home/dana
+   - shell: /bin/bash
+
+
+States use state functions to configure servers to match desired end results
+
+A group of related states is a formula
+
+
+set file_roots
+
+Determine where state files are stored
+
+Found in /etc/salt/master
+
+file_roots:
+  base:
+    - /srv/salt
+
+uncomment the above and restart salt master
+systemctl restart salt-master
+
+creating our first state
+
+initial focus: ubuntu install
+
+from /srv/salt, create ad move to php directoryn
+
+sudo mkdir /srv/salt
+cd /srv/salt
+/srv/salt$ sudo chown user:user /srv/salt --know what this does
+/srv/salt$ mkdir php
+          cd php
+to know what pkg modules are there
+salt '*' sys.list_funcions pkg
+
+to know state functions, functions for pkg
+
+salt '*' sys.list_state_functions pkg
+
+gives states of pkg
+
+gener documentation
+
+--------creation of our first state
+
+/srv/salt/php$ 
+
+create init.sls file, init.sls is automatically read when we call php state
+
+init.sls
+
+   php_install:    #name declaration
+     pkg.installed: #state function
+       - name: php   #properties
+
+
+other-concept---to replace :%s/mysql/gs----
+
+
+to test the state
+
+salt 'web' state.sls php test=true (it wont change)
+
+To actually install
+
+salt 'web' state.sls php
+
+incomplete- to be continued
+
+
+-----------------------------------------
+
+init.sls
+
+
+salt '*' sys.state_doc pkg
+
+list arguments for pkg functions
+
+****salt '*' sys.state_argspec pkg.installed
+
+
+-----------------------------------------------
+
+top.sls and state tree
+
+top.sls file maps what servers will use which states, written n yaml
+
+located at the top of our file_roots directory
+/srv/salt/top.sls
+            set in /etc/salt/master, state_top setting
+
+we can change top file name by changing in state_top setting
+
+
+Hierarchy
+
+Define environment
+Define targets
+Define states
+
+/srv/salt/top.sls
+
+vi top.sls
+
+Define base env
+Define minios
+Addstates
+
+base: # define base
+ 'web*':  # define minions
+   - php  # add states
+   -php.mod-mysql
+   -php.mod-curl
+   -php.mod-xmlrpc
+   -php.mod-xml
+   -php.mod-gd
+   -php.mod-mbstring
+  
+
+
+
+
+
+
+
+
+
+
+Basic templating engine
+
+Jinga overview
+Default templating language
+Evaluated before yaml
+
+jinja used for
+
+conditinals(if/else)
+Macros
+Filtering
+Templating files
+Calling execution modules
+
+
+Jinja encased in {{ }} or {% %}                                                                                                           
