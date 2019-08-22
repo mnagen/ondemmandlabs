@@ -1,0 +1,133 @@
+
+
+
+
+kubectl exec etcd-master -n kube-system etcdctl get / --prefix -keys-only
+
+kube api server will update etcd
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: redis
+  
+spec:
+  containers:
+  - name: redis
+    image: redis123
+
+use kubectl edit pod or kubectl apply
+
+If you are not given a pod definition file, you may extract the definition to a file using the below command:
+
+kubectl get pod <pod-name> -o yaml > pod-definition.yaml
+kubectl get rs rs-name -o yaml > rs.yaml
+kubectl create -f rs.yaml
+
+replication controller ensures multiple instances of a single pod ensuring high availability
+rc is good to have fo a single pod as it brings up a new pod when the pod fails
+
+rc can also help in load balancing by bring up new pods when the load is high
+
+if the resources are runnning out on the first node, we could deploy additional pos on the other nodes
+
+kubectl get replicationcontroller
+kubectl get replicaset
+kubectl delete replicaset 
+kubectl get deployments
+kubectl get all
+
+
+kubectl create namespace dev
+
+or
+
+namespace.yml
+
+apiVersion:v1
+kind: Namespace
+metadata:
+  name: dev
+
+
+kubectl get pods --namespace=dev
+
+kubectl get pods --all-namespaces
+kind: ResourceQuota
+modifying a replica set
+
+kubectl create -f rs-def.yml
+
+kubectl scale --replicas=6 -f rs-def.yml
+kubectl scale --replicas=6 replicaset myapp-replicaset
+
+
+kubernetes job description
+
+configuring cronjobs in kubernetes
+Rolling updates with kubernetes Deployments
+Working with kubernetes network policies
+Exposing service in kubernetes
+Debugging kubernetes
+
+
+ConfigMap
+
+kubectl create configmap
+
+kubectl create configmap configname --from--literla==key=value
+
+
+kubectl create configmap configname --from--literla==key=value \
+
+                                    --from--literla==key=value
+
+
+when you have to many configuration items
+
+kubectl create configmap
+ configname --from-file=path-to-file
+
+kubectl create configmap \
+app-config --from-file=app_config.properties
+
+also we can create yaml file for configmap
+
+kubectl create -f config-map.yml
+
+apiVersion:v1
+kind:ConfigMap
+metadata:
+ name: app-con
+data:
+  app_color:blue
+  app_mode:prod
+
+
+To view configmaps
+
+kubectl get configmaps
+
+kubectl describe configmaps
+
+
+configmap is a kubernetes object to store configuration data in  akey value pair, it used to configure the software running in a container
+
+
+
+passing configmap data to a pods container as an environment variable
