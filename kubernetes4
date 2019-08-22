@@ -1,0 +1,41 @@
+To edit a pod
+
+kubectl edit pod podname
+
+controllers - Brain behind kubernetes, they are the processes that monitor kubernetes objects and monitor accordingly
+
+Even if you have a single pod, replication controller can bring up the new pod, when the existig pod goes down
+
+Replication controller ensures the specified number of pods are running all time, even if it is just 1 or 100
+
+another reason we need replication controller to create multiple pods to share the load across them.
+
+If the resources are running out of the node, it can bring up the pod on the newer node
+
+Replicaset is the newer one
+
+spec: Defines what is inside the object that we are creating.
+
+Replication controller create multiple instances of a pod
+
+template and replicas are children of spec
+
+kubectl get replicationcontroller
+
+
+kubectl create -f replication-controller.yml
+
+kubectl get pods
+
+for replicaset apiVersion:apps/v1
+
+other diff is replicaset has selector label, the selector helps the replica set to identify what pods fall under it
+
+
+editing  a replicaset/ scaling replicas
+
+kubectl create  -f replicaset-defintion.yml
+
+kubectl scale --replicas=6 replicaset-defintion.yml
+
+kubectl scale --replicas=6 replicaset myapp-replicaset
