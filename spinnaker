@@ -1,0 +1,32 @@
+
+
+
+kubernetes has no deployment mnagement built in
+
+you'd have to "fire and forget" from the CI to the kubernetes API, there is no tracking of the deployment
+
+
+
+storage
+
+
+
+
+
+hal config storage s3 edit --access-key-id --secret-access-key
+
+
+vi -/ .hal/config
+
+hal config provider kubernetes enable
+
+Managing account- There will be one managing account
+Managed account - There will be many managed accounts - used by spinnaker
+
+spinnaker assumerolepolicy - you can more accounts by editing this policy
+
+create spinnaker user- give power user uaccess, also give spinnakerasumerolepolicy
+
+copy spinnaker user arn
+
+spinnaker managed role
