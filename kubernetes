@@ -1,0 +1,198 @@
+
+When you need to depoy something on kubernetes, you need deploymentd
+
+
+One is to maintain the number of replicas - which is useful for fault tolerance and high availability
+
+1)It has replication controller - manages the replicas
+2)It offers you the strategy- to define upgrade policy from one version to another version
+
+Deployment configuration shows the number of pods running
+
+Whether it upscales or downscales it happens through deployment
+
+
+Deployment in kubernetes looks like this
+
+you create a deployment strategy and replica set
+
+replica set is responsible for maintaining the replicas
+
+.i.e it maintains the pod specification
+
+
+replication controllers constantly will monitor your number of instancces, if there is a underlying failure
+as your pod goes down, container or your instance goes down, automatically it will recreate it and reschedule it possibly on other nodes, which happens in a automatic way
+
+so it is constantly monitoring the pods, so the way it is being monitered is using the labels
+when you deploy your application, you gonna label those
+
+replication controller has a selector, using it it is monitroing the pods
+
+selector show match label
+
+release strategy 
+
+
+rolling- delete previous one's, launch one's
+recreate- bring down all instances, cut over to new instances
+custom
+
+
+
+service which loa balancs the traffic to your pods and also it exposes the application to external world
+service loadbalances the traffic to the pods using labels and selectors
+
+service not only responsible for exposing applications to outside world but also for internal service discovery
+
+service has an internal domain name(dns) which can be accessed by pther applications internally and an internal ip(clustr ip)
+
+
+for each application you create a deployment, you create a service
+
+for each applicaton, you'll have a deployment and service components unless you want the application to be discovered
+
+
+application here is exposed by loadbalancer but it also can be exposed using route, domain name which is called ingress controller or you can use the node port
+
+In the service of the yam file, you can check the node port
+
+loadbalancers are only available in case of cloud
+
+if on onpremis you hav to use either nodeport, domain name or ingress controller, you can also doing is externally ip
+
+
+pods
+
+when you create a container, upto 5 namespaces you can create
+
+
+isolated
+
+a container can have its own filesytem, network, hostname, user namespace, binaries, dependencies, root file
+process id,
+
+
+common
+
+network namespace
+hostname/uts namespace
+
+
+you can colocate containers in one pod, and often pod to have a one only container
+
+pod allows us to colocate containers together
+
+
+
+
+
+
+SPECS
+
+Manifest
+
+APIVersion
+
+Kind
+
+Metadata
+
+     will have names and labels
+
+
+SPEc
+      will have containers
+	       will have name
+		             image
+					 ports
+					 
+					 
+					 
+					 
+					 
+					 
+When to rum more than one container in a pod
+
+
+
+
+istio---
+
+
+Kubernetes Internal service discovery
+
+
+Im choosing clusterip as i dont need to expose the service outside
+
+Internal service discovery between the applications
+
+when frontend want's to talk with the other service
+
+
+scaling applications manually with autoscaler
+
+
+Zero down time deployment
+
+kubectl cluster-info
+
+deployment manage replica sets, replica sets manage pids\
+
+deployment uses replica sets
+
+be awARE of systemd, etcdctl, cfss
+
+
+
+
+
+
+
+
+
+
+
+
+
+Minikube can installed on the following systems
+
+Minikume lets to form/create a all in one kubernetes cluster
+
+when started for the first time, minikube requires internet
+
+kubectl is the Command Line Interface (CLI) tool to manage the Kubernetes cluster resources and applications. 
+Annotate
+
+https://github.com/dennyzhang/cheatsheet-kubernetes-A4
+
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/cheatsheet-kubernetes-A4.pdf
+
+
+
+http://design.jboss.org/redhatdeveloper/marketing/kubernetes_cheatsheet/cheatsheet/cheat_sheet/images/kubernetes_cheat_sheet_r1v1.pdf
+
+https://caylent.com/kubectl-commands-cheat-sheet/
+
+https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-A4
+
+https://kubernetes-on-aws.readthedocs.io/en/latest/_downloads/kubernetes-cheat-sheet.pdf
+
+
+https://info.shadow-soft.com/hubfs/Kubernetes-Cheatsheet-Mesosphere.pdf
+
+https://github.com/topics/denny-cheatsheets
+
+https://www.cheatography.com/nighthawk/cheat-sheets/kubectl/
+
+https://dzone.com/articles/new-aws-solutions-googles-jib-and-ibms-cloud-nativ
+
+
+
+
+https://www.cheatography.com/jwilkinson/cheat-sheets/kubernetes/pdf/
+
+
+https://dzone.com/articles/new-aws-solutions-googles-jib-and-ibms-cloud-nativ
