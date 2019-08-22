@@ -1,0 +1,6 @@
+1) Installation and Setup of Control Machine.
+2) Setting up an SSH connection.
+3) Ping to Remote AWS EC2 node.
+4) Creating Inventory, Template, Playbooks.
+5) Pushing Module on Remote node.
+5) Deployment of an Apache Web Server with Template using Ansible Playbook to the Remote Server.
