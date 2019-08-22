@@ -1,0 +1,197 @@
+
+you deploy a pod to a cluster by defining a manifest file
+
+You give manifest to the apiserver, and scheduler deploys to the node
+
+a pod only gets a single ip irrespective of the containers present in it
+
+every container in a pod has a single namespace
+also share same cgroups, volumes, ipc namespaces
+
+Interpod communication is possible
+
+Every pod gets its own ip that is routable on the pod network
+
+every pod can talk to any other pod
+
+
+for two containers that are on a single pod, still the same networking rules apply for each containerr
+
+pod gets deployed
+pod gets ip
+
+pod gets deployed to a single node
+
+pods lifecycle
+
+
+you fill the manifest to apiserver, once it is scheduled for the node it goes to a pending state, then it goes to running state and to succceded.
+
+pods are smallest/atomic unit of scheduling in kubernetes
+
+pods are declarative via manifest files, you throw manifest file to apiserver, and scheduler assigns it on a mode
+
+
+kubectl is nothing it is kubernetes client binary
+
+
+we define pods in manifest files, we'll feed them to apiserver and scheduler initiates on the node
+
+vim pod.yml
+
+
+
+manifest file of a pod
+
+apiversion:v1
+kind:pod
+metadata:
+   name:hello-pod
+   labels:
+      zone:prod
+      version:v1
+spec:
+  containers:
+    -name:hello-ctr
+	 image: image path
+	 ports:
+	   -containerPort:8080
+	   
+	   
+to deploy a pod
+
+kubectl create -f pod.yml
+
+
+
+kubectl describe pods
+
+kubectl get pods
+
+
+	   
+to create a replication controller
+
+kubectl create -f rc.yml
+
+to apply changes to config file
+
+kubectl apply -f rc.yml
+
+replication controller is a high level construct, though we are having one pod it should be defined in replication cotroller,
+ in replication controller we define the desired state
+
+Service
+
+You can't rely an pod Ip, pods are ephermal
+
+any time when scaling happens you get new pods with a new ips and pods
+
+
+kubernetes services object - defines the way how you expose the app to outside world
+
+Theory of services
+
+create a service the iterative way
+
+create a service the declarative way
+
+real-world application
+
+
+how do we access our app in kubernetes ?
+
+answee: services
+
+Inside the cluster: services
+outside the cluster: services
+
+service is a dns and has a single ip(constant) (logical construct), 
+
+service does the load balance across all the pods
+
+service checks the enpoints which has a list of pods, endpoint(pod1,pod2,pod3,pod4)
+
+how do we tie the pods with service ?
+Answer: labels
+
+
+labelseclector continusly watches 24/7
+
+any changes in the pod will reflect in the endpoint list
+
+
+service discovery
+
+
+kubelet =node( the k8's agent on the node)
+
+services gets resolvable names inside the cluster
+
+watch the api for new se
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+salt-call state.highstate
+
+salt-call -l error state.highstate
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+To establish secure connection between the client and the master you need secured certificate
+
+you can download cfssl cfssljson
+here you need kubernetes-csr.json, ca-csr.json, ca-config.json, here is where you will mention the ip address of all the machines
+
+kubernetes-csr.json- where you will mention the private ip address of the master machine
+
+you can use cloudflare for this
+
+
+
+encryption, will work on, only after office hours 
