@@ -4,3 +4,38 @@
 4) Creating Inventory, Template, Playbooks.
 5) Pushing Module on Remote node.
 5) Deployment of an Apache Web Server with Template using Ansible Playbook to the Remote Server.
+Projects
+
+
+https://legacy.gitbook.com/book/astaxie/build-web-application-with-golang/details
+
+https://www.golang-book.com/books/intro/1#section1
+
+User Creation
+Daily Tasks
+Installing Jenkins
+Deploying LAMP Stack
+
+https://github.com/leucos/ansible-tuto/tree/master/step-01
+What is ANSIBLE tower
+
+
+
+kitematic- cotainer logs
+
+it didn't provison, protein dev servers
+
+
+if you encrypt your data volumes ypu shuld aslo encrypt root volumes
+
+
+
+    06kellyjac/nyancat
+    jeremy646/doge
+	
+	docker pull spacebones/doge
+	
+	docker run -d --name treatseekers -p 80:80 spacebones/doge
+	
+	docker ps
+                  
