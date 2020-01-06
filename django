@@ -1,0 +1,63 @@
+Building your first python Django app
+
+Mkdir vidly 
+Cd vidly
+apt install python3
+apt install python3-pip
+pip3 install pipenv
+pipenv install Django==2.1 (also creates a virtual env)
+
+To create a Django project
+django-admin startproject vidly .             (. Represents current directory)
+python3 managee.py runserver
+on AWS
+Python3 manage.py runserver 0.0.0.0:8000
+To see the running processes
+netstat -plntu
+To kill a process
+Kill -9 pid
+In the settings.py
+Add your IP in the allowed hosts
+ALLOWED_HOSTS = ['XX.XX.XX.XX']
+
+python manage.py startapp movies
+
+create a urls.py
+
+from django.urls import path
+
+urlpatterns= [
+path(‘’)
+]
+Upgrading Django version
+
+Pip3 install –upgrade django=2.2
+
+Checking Django version
+Python3 -m Django –version
+  or
+>>> import django
+>>> django.VERSION
+
+Or
+python -c "import django; print(django.get_version())"
+or 
+django-admin.py version
+
+for python
+import sys
+sys.version
+
+
+import django
+django.get_version()
+
+
+To downgrade version pipenv install Django==2.1
+Creating super users for Django admin
+
+Python3 manage.py createsuperuser
+
+Building apis using python
+Pipenv install Django-tastypie
+Python3 manage.py startapp api
