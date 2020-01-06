@@ -180,3 +180,12 @@ Use managed services like GKE
 
 
 to be watched; https://www.youtube.com/watch?v=BLktpM--0jA
+
+kubelet can run on master node as well
+10250
+kubescheduler-10251
+kube-controller-manager-10252
+
+worker nodes expose external access from 30000-32767
+
+etcd listens on 2379
