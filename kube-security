@@ -189,3 +189,20 @@ kube-controller-manager-10252
 worker nodes expose external access from 30000-32767
 
 etcd listens on 2379
+
+
+VPC - Subnet CIDR Planning
+
+
+Router helps two networks to connect each other
+
+if network is a room, gateway is a door
+
+route command displays the kernel routing table
+
+if the system A has to send the packet to the system B
+ 
+you need to add the route onn system a routing table
+
+if this systems need to connect to the internet, you connect the router to the internet and then add a new route
+to the routing table
