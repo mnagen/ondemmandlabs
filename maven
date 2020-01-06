@@ -1,0 +1,48 @@
+1)>>>   ***The first step in building an aplication is compiling it***
+
+                        mvn compile
+
+           maven will compile the java source code to class files
+
+
+2)>>> After maven compile, we ll do maven test, if there are any tests associated with project
+
+                          mvn test
+
+         once you run the maven test, we can see the results
+
+       how many tests were run, failures, errors, skipped, mainly you'll see the build was successfull
+
+
+3)>>> ::package phase:: in package phase, mvn will generate a jar or war file, you can find this it in the target folder
+
+
+After testing our application, you can do the packaging,in .net, we have Nunit to ren tests, Nuget to package
+
+
+
+
+
+
+In jenkins to build using maven
+
+go to build step
+
+Invoke top-level maven targets
+
+Goals:  compile
+
+
+packaging application
+
+
+https://linuxacademy.com/cp/modules/view/id/324?redirect_uri=https://app.linuxacademy.com/search?query=rhca
+
+In the build step
+
+Invoke top-level maven targets
+
+Goals: package
+
+
+Goals: clean package ---- > this will delete any previous build artifacts, compile our code, run our unit tests, and generate a JAR file
