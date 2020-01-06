@@ -1,0 +1,44 @@
+
+Host
+
+you can run a kernel with grsecurity and PaX.
+
+
+	Docker
+
+Execute the below command on the docker host and ensure that only trusted users are members of the docker group. getent group docker
+
+getent group docker
+
+
+Verify that there is an audit rule for Docker daemon. For example, execute below command: 
+
+auditctl -l | grep /usr/bin/docker
+
+This should list a rule for Docker daemon.
+Remediation:
+Add a rule for Docker daemon.
+For example,
+Add the line as below line in /etc/audit/audit.rules file: -w /usr/bin/docker -k docker
+Then, restart the audit daemon. For example,
+
+service auditd restart
+
+
+Verify that there is an audit rule corresponding to /var/lib/docker directory.
+For example, execute below command: auditctl -l | grep /var/lib/docker
+
+Add a rule for /var/lib/docker directory.
+For example,
+Add the line as below in /etc/audit/audit.rules file: -w /var/lib/docker -k docker
+Then, restart the audit daemon. For example, service auditd restart
+
+
+Verify that there is an audit rule corresponding to /etc/docker directory.(scored)*********
+For example, execute below command: auditctl -l | grep /etc/docker
+This should list a rule for /etc/docker directory.
+Remediation:
+Add a rule for /etc/docker directory.
+For example,
+Add the line as below in /etc/audit/audit.rules file: -w /etc/docker -k docker
+Then, restart the audit daemon. For example, service auditd restart
