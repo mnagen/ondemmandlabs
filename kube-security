@@ -1,0 +1,182 @@
+Kubernetes
+----------------------
+Container orchestrator, 
+
+security101
+runtime security
+host security
+network security
+threat detection
+build hygiene
+image hygenie
+
+
+security should be redundant
+there should be less software on the host to be patched, so there is less software that is vulnerable to attack
+least-privelege - only give as much permission/privelege as is absolutely necessary
+
+Guestbook app
+
+1)
+Frontend
+ serves web traffic
+
+2)
+
+
+
+By default every pod in kubernetes cluster gets a service account
+
+if you are not using rbac, each of the service accounts has number of permissions/roles associated with it, that allows the pod to talk to the api server and make requests to the api server
+
+if you are not careful and given  the service account has as many as permissions, if there is an vilnerability in one of the pod, 
+
+The first thing positively you need to do is your using RBAC in kubernetes, to make the cluster secure
+
+Role Based Access Control
+Roles given to users
+
+Each role has permission to perform some operation, this is what a user or a service account can do
+  get secrets
+  update configmap
+  etc
+
+RBAC Settings apply to namespace-- you can assign roles to a user that are allowed in one namespace, not in other namespaces
+
+Role or Rolebindings are applied to a single namespace
+ClusterRole and ClusterRoleBinding are applied to an entire cluster
+
+API Server Firewall
+
+Retrict access to API server to certain IP addresses
+
+
+Inorder to  mitigate further attacks on the cluster is by using Network policy
+
+Restrict access to database to only the pods that require it
+Specify access vi labels
+Network solution implementation: Calico, Weave, etc
+
+
+you specify the label sector to which pod the policy applies to, which pod accept the incoming request or the send reuest, here the below pod applies to redis pod, which can accept ingress network request that is coming only from the guestwebook
+
+
+Network policy
+
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: redis
+spec:
+  podSelector:
+    matchLabels:
+      name: redis
+  ingress:
+   - from:
+     - podSelector:
+        matchLabels:
+          name: guestbook
+
+
+Get access to cluster components
+
+1) Manipulate cluster data in etcd
+
+you need to make sure your etcd is totally secured from not allowing anyone to manipulate the cluster data
+
+Mitigate1) Secure etcd
+
+Use authentication and firewalls to restrict access to etcd, make sure your etcd has some authentication mechanism and firewall to make sure that you cannot need to send network traffic to etcd from inside the cluster, if some one has access to etcd, they can create pods, read secrets
+
+Another thing you can do is to encrypt the data that is saved in etcd, 
+Encrypt data in etcd (encryption at rest) - ability to encrypt the data that is coming in and saved in etcd, so if someone is reading the data they are not reading the plain text, they are reading the encrypted data
+
+
+Another way to attack a cluster is
+
+Get access to host
+
+1) Break out of a container and try to access host
+
+2) attacker might tries to come out of the contianer with some kernel bug or some kubernetes bug to gain acess to host, then read files from the filesystem that are on the host or exucte the applications on the host outside of the container
+
+so this allows him to see the other contianers that are running on the host, read the secrets that are assocaited with those contaners and whatnot
+
+3) as well as he will be able read the kublet authetication and certificates as access the credentials from the kubelet and talk to apiserver pretending as kubelet, and try get information about other pods and secrets
+
+one thing to mitigate is to make harder for people to break out of the container, the way to do this to run applications inside the containers as a user rather than a rootuser
+
+readOnlyRootFilesystem: true
+
+sandboxed pods
+
+1. pods are sandboxed from other pods on the same host
+2. sandbox provides two ayer of isolation
+sandbox + container (lnux kernel)
+
+3. Examples: kata containers, gVisor
+
+seccomp/apparmor/selinux , enable seccomp policy, applies default docker run time with seccomp policy
+
+
+
+--------
+Restrict kubelet permissions - rbac for kubelet
+
+
+
+rotate kubelet certs
+kubelet --rotate-certificates
+
+
+--------------------
+unsecured pods
+
+
+-----------
+open policy agent
+
+
+
+listening to traffic
+
+1. sniffing or intercepting traffic on the network
+
+2. request forgery
+
+-----------------
+
+istio
+
+servicemesh
+
+includes Envoy proxy
+
+
+
+
+
+
+ISTIO
+
+1. proxy data between service
+
+2. End to end encryption
+
+3. Rolling certificates
+
+4. Policy managed by central server
+
+
+Tips
+
+Update kubernetes early & often
+
+Dont use admin for day-to-day work
+
+Try benchmarking tools like kube-bench
+
+Use managed services like GKE
+
+
+to be watched; https://www.youtube.com/watch?v=BLktpM--0jA
