@@ -1,0 +1,434 @@
+1. 
+ kubeadm init --apiserver-advertise-address $(hostname -i)
+
+
+2. 
+  
+ kubectl apply -n kube-system -f \
+    "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 |tr -d '\n')"
+
+3. 
+ 3. (Optional) Create an nginx deployment:
+
+ kubectl apply -f https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/application/nginx-app.yaml
+
+
+Exposing replication controller
+
+kubectl expose rc kubia --type=LoadBalancer --name=kubia-http
+
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now join any number of machines by running the following on each node
+as root:
+
+  kubeadm join 192.168.0.23:6443 --token mm872y.theqtnffb6m8845d --discovery-token-ca-cert-hash sha256:ff3b3cfb365834a59fef0f95ced737e4828cd52644f3590ba784f86c9f6ee692
+
+Waiting for api server to startup
+
+
+                          The PWK team.
+
+Running our first app on kubernetes without getting much in to objects, yaml or json
+........................................................................................................
+...................................................................................................
+
+kubectl run node-container --image=mnagen/octnodeimage --port=8080 --generator=run/v1
+
+
+kubectl run node-container --image=luksa/kubia --port=8080 --generator=run/v1
+
+1 replication controller is created
+
+scaling the pods using replication controller, rc is nothing but the replication of pods
+.....................................................................................................
+....................................................................................................
+kubectl rc kubia-container --replicas=3
+
+luksa/kubia
+
+replicationcontroller/node-container created
+
+---------------------------------------To dwonscale----------------------
+
+kubectl scale rc kubia-container --replicas=2
+..............................................................................................
+----------------------------------------------------------------------------------------------
+
+Creating a service object by exposing the replication controller that was created earlier
+
+kubectl expose rc kubia --type=LoadBalancer --name=kubia-http
+kubectl expose rc kubia-container --type=LoadBalancer --name=kubia-http
+
+kubectl get svc
+
+you'll see an external ip is created and you can browse it through external ip:port on browser
+
+on the instance terminal you can run using 
+
+curl externalip:8080
+
+curl a6c6690f8ff0f11e99c76128d385f6bb-751962356.us-east-1.elb.amazonaws.com:8080
+
+-------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------
+kubectl delete service service-name
+
+----------------------------------------------------------------------------------------------------------
+
+To see pods logs
+
+kubectl logs pod-name
+
+
+
+***specify the container name to get logs from a multi container pod**
+
+kubectl logs pod-name -c container name
+------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
+
+Another way to send requests to the pod apart from creating a service object by using kubectl expose command is
+port forwarding
+
+
+kubectl port-forward pod-name 8888:8080
+
+when port forward runs you can connect to pod through localport
+
+using port-forwarding is an effective way to test an individual pod
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+--------------------------------------------------------------------------
+
+Creating our first pod using yaml file: vi filename.yaml
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+   name: my-container-name
+   labels:
+    env: prod
+    type:web-app
+spec:
+   containers:
+     - image: mnagen/otcnodeimage
+       name: my-node-container
+       ports:
+        - containerPort:8080
+          protocol: TCP
+
+
+To create a pod
+
+kubectl create -f filename.yaml
+-----------------------------------------------------------------------
+----------------------------------------------------------------------------------
+***Labels****organizing pods with labels
+
+organizing pods and all other kubernetes objects is done through labels
+
+kubectl get pods doesn't show any labels, but we can see using --show-labels
+
+
+kubectl get po --show-labels
+
+If you want to display only certain labels, use -L switch
+
+kubectl get po -L env, app
+
+******Add-label****we can also manually add the label to the already existing pod
+
+kubectl label pod pod-name creation_method=manual
+
+**overwrite***You can also overwrite the label using the --overwrite tag
+
+kubectl label po podname env=debug --overwrite
+
+
+kubectl get nodes
+
+****node****You can attach labels to nodes too
+--- adding----a label to a node
+kubectl label node node-name gpu=true
+
+listing node with labels
+
+kubectl get node -l gpu=true
+-----removing a label------------------
+adding a label (gpu=true) to the node
+
+
+now creating a pod using yaml file to schedule the pod on the node with label(gpu=true)
+
+vi kube-gpu.yaml
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-container
+spec:
+  nodePort:
+   gpu: "true"
+   containers:
+    - image: luksa/kubia
+      name: kube
+      ports:
+       - containerPort: 8080
+         protocol: TCP
+
+Create the pod now
+
+kubectl create -f kube-gpu.yaml, now you can check using the below command to see the pod schedlued on the node that is tagged with gpu=true
+
+kubect get pods -o wide
+
+--------------Adding annotations----------------
+
+kubectl annotate pod kubia-manual mycompany.com/someannotation="foo bar"
+pod "kubia-manual" annotated
+
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+*****Namespaces*****
+
+Instead of having all resources in single namespace, you can split them in to multiple namespaces, which allws you to same resources multiple times across namespaces
+
+
+to list all name spaces
+
+kubectl get ns
+
+
+To get pods belonging to kube-system namespace
+
+kubectl get po --namespace kube-system (you can also use -n instead of --namespace)
+
+
+
+
+
+
+error------------------ors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type     Reason            Age              From               Message
+  ----     ------            ----             ----               -------
+  Warning  FailedScheduling  6s (x3 over 1m)  default-scheduler  0/1 nodes are available: 1 node(s) were not ready errors-----failedschedluling
+
+
+kubectl run node-app-container --image=mnagen/otcnodeimage --port=8080 --generator=run/v1
+
+kubectl run node-app-container --image=mnagen/otcnodeimage --port=8080 --generator=run-podkub/v1
+
+
+
+trying------it-worked--------st in general, a rude docker system prune -a and docker network prune can clean up an existing mess in your docker. But only run them if you can loose stuff that's currently not being used (dangling images, stopped containers, etc.).
+Other than that, the DOCKER_* environment variables might be causing issues.
+
+Info about the environment, OS and k3d version can be helpful for debugging ??
+
+
+
+
+kubectl get pods
+---------------------------------------------------
+Control plane node isolation
+By default, your cluster will not schedule pods on the control-plane node for security reasons. If you want to be able to schedule pods on the control-plane node, e.g. for a single-machine Kubernetes cluster for development, run:
+
+
+=========it--worked===============
+kubectl taint nodes --all node-role.kubernetes.io/master-
+
+
+
+untainted
+
+------------------
+
+------
+  Warning  FailedScheduling  3m (x44 over 33m)  default-scheduler  0/1 nodes are available: 1 node(s) had taints that the pod didn't tolerate.
+  Normal   Pulling           47s (x3 over 1m)   kubelet, node1     pulling image "mnagen/octnodeimage"
+  Warning  Failed            46s (x3 over 1m)   kubelet, node1     Failed to pull image "mnagen/octnodeimage": rpc error: code = Unknown desc = Error response from daemon: pull access denied for mnagen/octnodeimage, repository does not exist or may require 'docker login'
+
+
+No resources found.-----------error----------------------
+The connection to the server 192.168.0.23:6443 was refused - did you specify the right host or port?
+[node1 ~]$ ^C
+------------------solution---and I found how to solve this question.
+
+sudo -i
+swapoff -a
+exit
+strace -eopenat kubectl version,
+
+there was no strace avaiblable, i installed strace manually, yum install strace
+and you can type kubectl get nodes again.
+
+https://discuss.kubernetes.io/t/the-connection-to-the-server-host-6443-was-refused-did-you-specify-the-right-host-or-port/552/5
+
+now run: kubectl get pods / kubectl get nodes
+
+
+
+
+
+rom               Message
+  ----     ------            ----              ----               -------
+  Warning  FailedScheduling  1m (x25 over 2m)  default-scheduler  0/1 nodes are available: 1 node(s) had disk pressure.
+[node1 ~]$ kubectl get pods
+NAME                                  READY     STATUS    RESTARTS   AGE
+node-app-container-6h6zv              0/1       Pending   0          44s
+node-app-container-854c54b8d9-4bljc   0/1       Evicted   0          3m
+node-app-container-854c54b8d9-l5fn9   0/1       Pending   0          1m
+node-app-container-g7zf4              0/1       Error     0          3m
+
+
+kubectl delte pods
+
+when pods are eleted, they are recreating
+
+
+https://stackoverflow.com/questions/40686151/kubernetes-pod-gets-recreated-when-deleted
+
+
+Troubleshooting: Stack overflow
+
+Can you check " kubectl get events " to see what is creating these objects
+
+try "kubctl get rc"to see if a ReplicationController was created. If so, delete that, then delete the pods. 
+
+
+
+Instead of removing NS you can try removing replicaSet
+
+kubectl get rs --all-namespaces
+Then delete the replicaSet
+
+kubectl delete rs your_app_name
+
+6
+
+In some cases the pods will still not go away even when deleting the deployment. In that case to force delete them you can run the below command.
+
+kubectl delete pods podname=node-app-container-854c54b8d9-vnls8 --grace-period=0 --force
+
+
+kubectl delete pods podname --grace-period=0 --force
+
+
+-----------M-U-S-T--R-E-A-D-----------------------------------------
+
+----------removing pods from kubernetes-- https://www.bluematador.com/blog/safely-removing-pods-from-a-kubernetes-node
+
+----------------------- Taints tolerations and afffinities ------- https://banzaicloud.com/blog/k8s-taints-tolerations-affinities/
+
+
+
+------
+  Normal   Scheduled               52s               default-scheduler  Successfully assigned default/node-app-container-8jqgm to node1
+  Warning  FailedCreatePodSandBox  51s               kubelet, node1     Failed create pod sandbox: rpc error: code = Unknown desc = [failed to set up sandbox container "8
+
+node-app-container-854c54b8d9-vnls8
+
+
+kubectl patch pod node-app-container-854c54b8d9-vnls8 -p '{"metadata":{"finalizers":null}}'
+
+-------error-----------NetworkPlugin cni failed to set up pod--------------------
+-----resolved-------kubeadm init --pod-network-cidr=10.244.0.0/16----------https://github.com/projectcalico/calico/issues/2418
+
+
+2m        2m        1         node-app-container-wkx7l.15d3702ea15ef5ed              Pod                                           Warning   FailedCreatePodSandBox   kubelet, node1           Failed create pod sandbox: rpc error: code = Unknown desc = [failed to set up sandbox container "751d4331b1be0579d878867f661fbb859db7cf0ea8f5d9a3b1b03cc84f48c382" network for pod "node-app-container-wkx7l": NetworkPlugin cni failed to set up pod "node-app-container-wkx7l_default" network: unable to allocate 
+
+
+
+
+
+
+
+
+
+
+errors-----failedschedluling
+--------------------------------------------------nov3------------------------------------------
+
+
+kops create cluster --cloud=aws --zones=ap-southeast-1b --name=dev.k8s.valaxy.in --dns-zone=valaxy.in --dns private
+
+kops create cluster --cloud=aws --zones=us-east-1a --name=otc.in --dns-zone=otc.in --dns private
+
+
+CREATING A SERVICE OBJECT
+To create the service, you’ll tell Kubernetes to expose the ReplicationController you
+created earlier:
+$ kubectl expose rc kubia --type=LoadBalancer --name kubia-http
+service "kubia-http" exposed
+
+CREATING A SERVICE OBJECT
+To create the service, you’ll tell Kubernetes to expose the ReplicationController you
+created earlier:
+$ kubectl expose rc  --type=LoadBalancer --name kubia-http
+service "kubia-http" exposed
+
+
+kubectl expose rc node-container  --type=LoadBalancer --name node-http
+
+---------------services-------------------------------
+
+while explaining about the srvices, you need to understand why do you need services, as pods are aphermal, when pod gets deleted, replication conroller replaces it with a new pod, the new pod gets a new ip, this changing of pod's Ip adress problem is solve by service, as well as exposing multiple pods at a single constant ip and port
+
+
+Whenever a service(object) is created, it is assgined a static ip address, hence this service ip address will remian constant. so instead of coonecting to pods directly, we connect to service which has the static ip address, service will make sure that pods recieve connection, regardless of which ip it is rnning with
+
+
+--------Service represents a static location for one or more pods that are providing same service----------
+
+Request coming to the IP and port of the service will be forwarded to the Ip and ports of one of the pods belonging to the service at that moment
+
+
+In the Kuber-
+netes world, what node a pod is running on isn’t that important, as long as it gets
+
+scheduled to a node that can provide the CPU and memory the pod needs to run
+properly.
+
+Regardless of the node they’re
+
+A pod is also the basic unit of scaling. Kubernetes can’t horizontally scale individual contain-
+ers; instead, it scales whole pods. If
+
+
+kubectl get po node-container-7z746 -o yaml
+
+
+kubectl logs pod
+
+specify the container name to get logs from a multi container pod
+
+kubectl logs pod-name -c container name
+
+
+------------------Replication controller----------------------------
+
+when you delete a replication controller, pods managed by the replication controller are also deleted
+
+
+when deleting a replication controller and still you want to keep its pods running
+
+kubectl delete rc kubia --cascade=false
+
+now the replication controller got deleted and the pods are managed by its own
