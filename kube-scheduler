@@ -1,0 +1,187 @@
+------------------Scheduler------------------------------------
+
+The purpose of the labels is to use label selector to schedule pause to ceratin nodes
+
+labelling a node
+
+
+kubectl label node naodename az=zone1
+
+
+you can replace your default scheduler using custom  scheduler or you can run both schedulers
+simaltenously
+
+cluster role and cluster role binding
+
+editing kube-scheduler cluster role----kubectl edit clusterrole system:kube-scheduler
+
+in the 
+reosurceNames:
+ - kube-scheduler
+ - my-scheduler     --- adding custom scheduler
+
+In the storageapi group
+
+- apiGroups
+  - storage.k8s.io
+
+  verbs:
+   - watch
+   - list
+   - get
+
+
+kubectl create -f custom-scheduler.yaml
+
+
+to check this--- kubectl get pods -n kube-system
+---------
+        ------------------------------------------------------------------------------------
+
+Taints and tolerations
+
+nodes are tainted inorder to repel work
+
+The best way to look is at the master node which is tainted no schedule
+
+Taints: NoSchedule
+
+Tolerations allow you to taint, you can put tolerations in the pod yaml
+
+-------------------------------How to not use scheduler-------------------
+---------------Daemon sets and manually schedule pods-------------------
+
+
+if there needs to be a single pod need to run on every node, daemon sets are perfect
+
+
+kubectl get pods -n kube-system
+
+we see that kube-proxy pod running on each node as well as kube-flannel running on each node
+
+
+kubectl get pods -n kube-system -o wide
+
+
+when we drained the pods to maintain perform maintainence on node, we set ignored Daemonset flag
+
+
+Daemn sets also ignore any taints on the nodes, thats why we see Daemonset pods on
+ master node, even though its tainted
+
+
+
+we can create a daemon set and run it the node by using node selector
+
+
+
+lets create a daemon set that will monitor our solid state drivess
+------------------------Displaying scheduler events---------------------
+
+
+we already know our scheduler is a controller in kube-system namespace
+
+
+
+kubectl describe pods kube-scheduler-pod -n kube-system
+
+in the event section there is none
+
+if  the pod isnot scheduled on the node, in the event section it will show the reason why
+
+
+you can get events using
+
+
+kubectl get events
+
+kubectl get events -n kube-system
+
+
+command: ['sh', '-c', 'ecHeho Hello Kubernetes! && sleep 3600']
+
+
+command: ['sh', '-c', 'echo Hello Kubernetes! && sleep 36ech
+
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: prod
+spec:
+ replicas: 1
+ selector:
+   matchLabels:
+     app: prod
+ template:
+   metadata:
+     labels:
+       app: prod
+   spec:
+     containers:
+     - args:
+       - sleep
+       - "3600"
+       image: busybox
+       name: main
+     tolerations:
+     - key: node-type
+       operator: Equal
+       value: prod
+       effect: NoSchedule
+
+https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/
+
+https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
+
+https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/
+
+https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/
+
+https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+
+https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+
+-------------------------------------------------
+
+node to node commuincation is done through  cni
+
+-----------------service networking-------------------------
+
+cluster  ip service  will take caref internal routing of cluster
+
+kube proxy will update ip tables
+
+ingress operates at the application layer
+
+coredns has relaced kubedns
+
+
+kubernetes scale deployment kubeserve --replicas=5
+
+kubectl rollout status deployments kubeserve
+
+kubectl set image deployments/kubeserve app=linuxacademycontent/kubeserve:v1
+
+kubectl rollout undo deployments kubeserve
+
+kubectl rollout history depployments
+
+kubectl rollout pause deployment
+
+kubectl rollout  resume deployment 
+
+https://www.youtube.com/watch?v=vTgQLzeBfRU&list=TLGGj-0E-Aadq14zMDAxMjAyMA
+
+kubectl get pods --field-selector=status.phase!=Running
+
+
+
+
+
+
+
+
+
